@@ -1,0 +1,19 @@
+
+#Hardhat files
+/deployments/*
+/cache/*
+/artifacts/*
+/node_modules/*
+/package-lock.json
+
+# System files
+/backup/*
+/*.DS_Store
+/.idea/*
+
+/contracts/*.bak
+/.env.keys
+/.env
+/*.flatten
+/.env.bak
+/doc/readme.md
