@@ -506,6 +506,7 @@ contract MILE is Context, IERC20, Ownable {
 	uint256 private _previousTaxFee = taxFee;
 
 	uint256 public retentionFee = 3; // 3%
+	uint256 public maxFeeCap = 5; // Maximum fee cap
 	uint256 private _previousRetentionFee = retentionFee;
 
 	uint256 public maxTxAmount = 500 * 10 ** 6 * 10 ** 18; // The maximum number of tokens that can be transferred per transfer， default is 5000w
@@ -650,10 +651,12 @@ contract MILE is Context, IERC20, Ownable {
 	}
 
 	function setTaxFeePercent(uint256 _taxFee) external onlyOwner() {
+		require(_taxFee + retentionFee <= maxFeeCap, "exceeding the maximum fee cap");
 		taxFee = _taxFee;
 	}
 
 	function setRetentionFeePercent(uint256 _retentionFee) external onlyOwner() {
+		require(_retentionFee + taxFee <= maxFeeCap, "exceeding the maximum fee cap");
 		retentionFee = _retentionFee;
 	}
 

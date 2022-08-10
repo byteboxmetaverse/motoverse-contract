@@ -42,6 +42,27 @@ describe("MILE", function () {
         it("Should set the right owner", async function () {
             expect(await hardhatMILE.owner()).to.equal(owner.address);
         });
+        it("Should set the fee right", async function () {
+            try {
+                await hardhatMILE.connect(owner).setTaxFeePercent(5)
+            }catch (e) {
+                expect(e.message).to.equal("VM Exception while processing transaction: reverted with reason string 'exceeding the maximum fee cap'");
+            }
+            try {
+                await hardhatMILE.connect(owner).setRetentionFeePercent(5)
+            }catch (e) {
+                expect(e.message).to.equal("VM Exception while processing transaction: reverted with reason string 'exceeding the maximum fee cap'");
+            }
+            await hardhatMILE.connect(owner).setTaxFeePercent(1)
+            await hardhatMILE.connect(owner).setRetentionFeePercent(4)
+            let taxFee = await hardhatMILE.taxFee()
+            expect(taxFee).equal(1)
+
+            let retentionFee = await hardhatMILE.retentionFee()
+            expect(retentionFee).equal(4)
+
+        });
+
     });
 
     describe("Transfer", function () {
